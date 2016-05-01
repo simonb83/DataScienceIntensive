@@ -1,0 +1,5 @@
+Code for anaylzing film box-office success vs. opening and subsequent weekend takings.
+
+This mini-project arose from a disucssion with my wife about Batman vs. Superman, and I decided it would be an interesting question to look at in order to practice techniques and tools I have been learning in the Springboard Data Science Intensive course.
+
+The Box Office Mojo webcrawler is inspired by and based-upon csredino's Box Office Mojo Scraper: https://github.com/csredino/Box-Office-Mojo-Scrapper
