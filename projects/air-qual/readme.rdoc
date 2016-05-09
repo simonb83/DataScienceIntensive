@@ -1,4 +1,4 @@
-### Mexico City Air Quality Index Analysis
+<h3><b>Mexico City Air Quality Index Analysis</b></h3>
 
 In March 2016, the government in Mexico City introduced emergency measures to try and deal with supposedly very high levels of contaminants in the air.
 At a first level, the measures involve including all cars in the 'Hoy No Circula' program; traditionally brand new cars and cars that pass emissions testing are excluded, however for the period running from 1st April - 30th June, all cars will be restricted for circulating one day per week as well as one Saturday per month.
@@ -28,27 +28,32 @@ As a first step, I focused on the Air Quality Index measures going back to 2005,
 
 The city is split into 5 regions:
 
-*Center
-*North-East
-*North-West
-*South-East
-*South-West
+<ul>
+<li>Center</li>
+<li>North-East</li>
+<li>North-West</li>
+<li>South-East</li>
+<li>South-West</li>
+</ul>
 
 and indices are reported hourly for:
 
-*Ozone (O3)
-*Sulphur Dioxide (SO2)
-*Nitorigen Dioxide (NO2)
-*Carbon Monoxide (CO)
-*Particulates smaller than 10 micro-meters (PM10)
+<ul>
+<li>Ozone (O3)</li>
+<li>Sulphur Dioxide (SO2)</li>
+<li>Nitorigen Dioxide (NO2)</li>
+<li>Carbon Monoxide (CO)</li>
+<li>Particulates smaller than 10 micro-meters (PM10)</li>
+</ul>
 
 The interpretation of the reportes indices should be as follows:
 
-*0-50 = Good
-*51-100 = Regular
-*101-150 = Bad
-*151-200 = Very Bad
-*>200 = Extremely Bad
-
+<ul>
+<li>0-50 = Good</li>
+<li>51-100 = Regular</li>
+<li>101-150 = Bad</li>
+<li>151-200 = Very Bad</li>
+<li>>200 = Extremely Bad</li>
+</ul>
 
 Note: the responsible agency for air quality monitoring (Secretaria del Medio Ambiente) provides a lot of easily accessible data, as well as good analysis and graphics on their website. My own personal analysis is more of a side-project in order to practice specific data collection, analysis and visualization techniques.
