@@ -1,0 +1,55 @@
+=begin rdoc
+<b>Mexico City Air Quality Index Analysis</b>
+
+In March 2016, the government in Mexico City introduced emergency measures to try and deal with supposedly very high levels of contaminants in the air.
+At a first level, the measures involve including all cars in the 'Hoy No Circula' program; traditionally brand new cars and cars that pass emissions testing are excluded, however for the period running from 1st April - 30th June, all cars will be restricted for circulating one day per week as well as one Saturday per month.
+
+Additionally, the authorities are able to declare additional emergency measures based upon air quality monitoring as well as weather-forecasts, whereby they:
+*further reduce the number of cars on the roads by including additional cars in the Hoy No Circula program (based upon the last digit of the number plate)
+*reduce the activity of gas stations, factories etc.
+
+Many people have been surprised (and a little skeptical) of this sudden need for measures, and have been asking why all of the sudden this has become an issue.
+This is an exploratory data analysis looking at historical data to understand how 'new' the problem really is.
+
+
+<b>GETTING THE DATA</b>
+
+There is a government-run website which publishes apprixmately hourly levels of contamination here: http://aire.df.gob.mx/default.php
+
+On the website, there is a section where you can query data for particular contaminants for specific months, outputting the data in a standardized HTML table format. This seemed like an ideal candidate for quick a dirty webscraping which I implemented using BeautifulSoup and the Python's inbuilt Urllib library, and can be seen in more detail in the DataWrangling notebook.
+
+However, subsequent analysis of the obtained data revealed that for most indices, I was only able to obtain data from 2015 and 2016. Luckily, a more detailed exploration of the website revealed another section where it is possible to download entire annual datasets in CSV format going back to 1986, such as:
+
+	-Hourly Air Quality Index
+	-Hourly Measurement for Specific Contaminants
+
+<b>INITIAL ANALYSIS</b>
+
+As a first step, I focused on the Air Quality Index measures going back to 2005, as these are the data that supposedly inform a daily decision as to whether impose additional measures or not (see above).
+
+The city is split into 5 regions:
+
+	-Center
+	-North-East
+	-North-West
+	-South-East
+	-South-West
+
+and indices are reported hourly for:
+
+	-Ozone (O3)
+	-Sulphur Dioxide (SO2)
+	-Nitorigen Dioxide (NO2)
+	-Carbon Monoxide (CO)
+	-Particulates smaller than 10 micro-meters (PM10)
+
+The interpretation of the reportes indices should be as follows:
+
+	*0-50 = Good
+	*51-100 = Regular
+	*101-150 = Bad
+	*151-200 = Very Bad
+	*>200 = Extremely Bad
+
+Note: the responsible agency for air quality monitoring (Secretaria del Medio Ambiente) provides a lot of easily accessible data, as well as good analysis and graphics on their website. My own personal analysis is more of a side-project in order to practice specific data collection, analysis and visualization techniques.
+=end
