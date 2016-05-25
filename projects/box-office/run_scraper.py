@@ -1,7 +1,9 @@
 import time
 import csv
+import sys
 from get_movie_data import movie_data
 import urllib
+from random import choice
 
 
 def write_files(general, details):
@@ -18,16 +20,20 @@ def write_files(general, details):
             writer.writerow(row)
 
 
+between_url_breaks = [2,2,2,3,3,6]
+between_batch_breaks = [10,20,30,40]
+
+
 movies = []
 
-with open("movie_list.csv", "r") as f:
+with open("missing-date.csv", "r") as f:
     data = csv.reader(f)
     next(f)
     for d in data:
         movies.append(d)
 
 # Skip the first N movies
-n = 1199
+n = -1
 new_movies = movies[n + 1:]
 
 
@@ -39,6 +45,8 @@ chunks = [new_movies[x: x + 200] for x in range(0, len(movies), 200)]
 # Set which chunk we need to process
 # start = 0
 
+error_links = []
+
 for ch in chunks:
     for c in ch:
         general = []
@@ -49,9 +57,18 @@ for ch in chunks:
             for d in det:
                 details.append(d)
             write_files(general, details)
-        except urllib.error.HTTPError:
-            break
+        # except urllib.error.HTTPError:
+        except:
+            # print("You got booted!")
+            print(sys.exc_info()[0])
+            error_links.append([c[1]])
+            next
         else:
             # Pause 3 seconds between movies
-            time.sleep(3)
-    time.sleep(30)
+            time.sleep(choice(between_url_breaks))
+    time.sleep(choice(between_batch_breaks))
+
+with open("links_with_errors.csv", "a", newline='') as f:
+    writer = csv.writer(f)
+    for e in error_links:
+        writer.writerow(e)

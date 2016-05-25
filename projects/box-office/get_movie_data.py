@@ -6,11 +6,19 @@ import re
 
 
 HEADERS = [
-    {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"},
-    {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'},
-    {"User-Agent": 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'},
-    {"User-Agent": 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.0.12) Gecko/20070731 Ubuntu/dapper-security Firefox/1.5.0.12'}
+    {"User-Agent": 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'},
+    {"User-Agent": 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0'},
+    {"User-Agent": 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36'},
+    {"User-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
 ]
+
+
+# [
+#     {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"},
+#     {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'},
+#     {"User-Agent": 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11'},
+#     {"User-Agent": 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.0.12) Gecko/20070731 Ubuntu/dapper-security Firefox/1.5.0.12'}
+# ]
 
 def movie_data(filmID):
     url = "http://www.boxofficemojo.com/movies/?page=weekend&" + filmID + "&adjust_yr=2015&p=.htm"
@@ -19,6 +27,9 @@ def movie_data(filmID):
 
     soup = BeautifulSoup(urlopen(page).read(), "lxml", from_encoding="utf-8")
     body = soup.find('div', {'id': 'body'})
+    
+    if len(body.findAll(text=re.compile('Invalid Movie ID Specified.'))) > 0:
+        return [], []
 
     general = [filmID]
     detailed = []
@@ -38,12 +49,14 @@ def movie_data(filmID):
             dte = re.search('&date=(.+)&', rel_date).groups()[0]
         else:
             dte = "NA"
+    elif release_date and release_date.find_parent() and release_date.find_parent().nobr:
+        dte = release_date.find_parent().nobr.string
     else:
         dte = "NA"
     general.append(dte)
     # Distributor
     distrib = body.find(string=re.compile("Distributor"))
-    if distrib and distrib.find_parent():
+    if distrib and distrib.find_parent() and distrib.find_parent().a:
         distributor = body.find(string=re.compile("Distributor")).find_parent().a.string
     else:
         distributor = "NA"
