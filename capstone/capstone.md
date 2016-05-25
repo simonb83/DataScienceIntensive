@@ -17,6 +17,7 @@ Is it possible to train a machine learner capable of distinguishing between and 
 #### How will the Outcome Impact the Client?
 
 Depending on the outcome of the project and the level of accuracy achieved, Company X will take one of three decisions:
+
 1. Include the feature in the beta version of the app if a sufficient level of accuracy is achieved
 2. Not include the feature initially, but increase the amount of investment in future work if the results offer promise for the future
 3. Not include the feature and eliminate future funding if results or potential are not satisfactory
