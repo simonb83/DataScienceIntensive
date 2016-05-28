@@ -1,32 +1,42 @@
 import time
 import csv
-import sys
-from get_movie_data import movie_data
 import urllib
+from get_movie_data import movie_data
 from random import choice
 
 
 def write_files(general, details):
+    """
+    Writes film data to separate CSV files
+    general: List of strings
+    details: List of strings
+
+    returns: None
+    """
+
     with open('general-info.csv', "a", newline='') as f:
         writer = csv.writer(f)
-        # writer.writerow(['movieID', 'AdjustedDomesticGross', 'ReleaseDate', 'Distributor', 'Genre', 'Budget'])
         for row in general:
             writer.writerow(row)
 
     with open('weekend-info.csv', "a", newline='') as f:
         writer = csv.writer(f)
-        # writer.writerow(['movieID', 'Year', 'Date', 'Rank', 'WeekendGross', 'pcChange','Theaters','Change','Avg','Gross-to-Date','Week_num'])
         for row in details:
             writer.writerow(row)
 
 
-between_url_breaks = [2,2,2,3,3,6]
-between_batch_breaks = [10,20,30,40]
+# Choices for breaks (seconds) between requesting subsequent urls.
+between_url_breaks = [2, 2, 2, 3, 3, 6]
 
+# Choices for breaks (seconds) between processing subsequent batches of films.
+between_batch_breaks = [10, 20, 30, 40]
 
 movies = []
 
-with open("missing-date.csv", "r") as f:
+# Name of file to use for film urls
+file_name = "missing-date.csv"
+
+with open(file_name, "r") as f:
     data = csv.reader(f)
     next(f)
     for d in data:
@@ -39,11 +49,6 @@ new_movies = movies[n + 1:]
 
 # Chunk movie list into 200 films at a time
 chunks = [new_movies[x: x + 200] for x in range(0, len(movies), 200)]
-# indices = [j for j in range(len(movies))]
-# chunks = [[movies[i] for i in np.random.choice(indices, 100)]]
-
-# Set which chunk we need to process
-# start = 0
 
 error_links = []
 
@@ -57,14 +62,11 @@ for ch in chunks:
             for d in det:
                 details.append(d)
             write_files(general, details)
-        # except urllib.error.HTTPError:
-        except:
-            # print("You got booted!")
-            print(sys.exc_info()[0])
+        except urllib.error.HTTPError:
             error_links.append([c[1]])
-            next
+            continue
         else:
-            # Pause 3 seconds between movies
+            # Pause between each movie
             time.sleep(choice(between_url_breaks))
     time.sleep(choice(between_batch_breaks))
 
