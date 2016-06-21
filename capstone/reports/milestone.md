@@ -33,7 +33,7 @@ Is it possible to train a machine learner capable of distinguishing between and 
     - Source: http://foodcam.mobi/dataset100.html
 
 
-### Initial Data Exploration: Dataset 2
+### Initial Data Exploration 1
 
 I started with the Menu-Match Dataset from Microsoft Research.
 
@@ -66,8 +66,9 @@ However ultimately I decided not to continue to use this particular dataset for 
 - Overall quite a small dataset
 - The images are not standardized (there are 41 different image sizes)
 
+For more details see: [image_analysis_1.ipynb](notebooks/image_analysis_1.ipynb) and [image_analysis_2.ipynb](notebooks/image_analysis_2.ipynb)
 
-### Initial Data Exploration: Dataset 1
+### Initial Data Exploration 2
 
 I moved on to using the Food 101 Dataset from the EETHZ Vision Lab.
 
@@ -153,6 +154,7 @@ The classes with the most successful predictions were:
 - Chocolate Cake
 - Pizza
 
+For more details see: [interim_report.ipynb](notebooks/interim_report.ipynb)
 
 ### Histogram classifier
 
@@ -174,12 +176,17 @@ The results were:
 
 Histogram Type| Intersection | L1 Norm | Euclidean 
 --------------|:------------:|:-------:|:---------:
-Greyscale Only | 9.07% | 9.07% | 9.50%
-RGB | 10.30% | 10.30% | 10.20%
-RGB + Greyscale | 10.37% | 10.37% | 9.90%
+Greyscale Only | 10.27% | 10.27% | 9.37%
+RGB | 10.50% | 10.50% | 9.93%
+RGB + Greyscale | 9.90% | 9.90% | 9.13%
 
-In general, given 12 classes, we would expect around 8% classification rate simply by picking at random, and so in this case we do only slightly better using the simple histogram classifier.
+Observations:
 
+1. In general, given 12 classes, we would expect around 8% classification rate simply by picking at random, and so in this case we do only slightly better using the simple histogram classifier.
+2. There is no difference between using Intersection and L1 Norm as a distance metric
+3. The RGB only histogram gives the best result in this case, and adding more features by including Greyscale data actually decreases accuracy, however the difference is very small, and it is important to note that this is only based on one run of the model
+
+For more details see: [histogram_classifier.ipynb](notebooks/histogram_classifier.ipynb)
 
 ### K Nearest Neigbours
 
@@ -195,17 +202,22 @@ The results in this case were:
 
 Histogram Type| Uniform | Weighted 
 --------------|:------------:|:-------:
-Greyscale Only | 15.27% | 15.43%
-RGB | 17.83% | 17.60%
-RGB + Greyscale | 18.10% | 17.60%
+Greyscale Only | 15.97% | 15.47%
+RGB | 18.63% | 19.03%
+RGB + Greyscale | 19.50% | 18.77%
 
-Interestingly, simple voting among the nearest neighbors in general seems to perform slightly better than with weightings. We also see that adding more 'features' in the histogram representations also results in a slight improvement in accuracy.
+Observations:
+
+1. For this model, adding more 'features' in the histogram representations also results in a slight improvement in accuracy.
+2. There is very little difference between using Uniform and Weighted voting in the model
+
+For more details see: [K_nearest_neighbour.ipynb](notebooks/K_nearest_neighbour.ipynb)
 
 #### Summary
 
 - From initial analysis it appeared that the RGB histograms were quite different for each of the top classes
 - However the best classification rate I was able to achieve simply using the average histogram was just over 10%
-- Using histograms and K-nearest neighbours, I was able to nearly double the classification accuracy
+- Using histograms and K-nearest neighbours I was able to nearly double the classification accuracy to 19.50%
 - However at less than 20% accuracy, it is still not high enough to be of real practical use, and so the next step is to explore more complex models to try and achieve greater accuracy.
 
-![KNN](images/knn.png)
+![classification_rates_1](images/classification_rates_1.png)
