@@ -66,7 +66,7 @@ However ultimately I decided not to continue to use this particular dataset for 
 - Overall quite a small dataset
 - The images are not standardized (there are 41 different image sizes)
 
-For more details see: [image_analysis_1.ipynb](notebooks/image_analysis_1.ipynb) and [image_analysis_2.ipynb](notebooks/image_analysis_2.ipynb)
+For more details see: [image_analysis_1.ipynb](../notebooks/image_analysis_1.ipynb) and [image_analysis_2.ipynb](../notebooks/image_analysis_2.ipynb)
 
 ### Initial Data Exploration 2
 
@@ -154,7 +154,7 @@ The classes with the most successful predictions were:
 - Chocolate Cake
 - Pizza
 
-For more details see: [interim_report.ipynb](notebooks/interim_report.ipynb)
+For more details see: [interim_report.ipynb](../notebooks/interim_report.ipynb)
 
 ### Histogram classifier
 
@@ -186,7 +186,7 @@ Observations:
 2. There is no difference between using Intersection and L1 Norm as a distance metric
 3. The RGB only histogram gives the best result in this case, and adding more features by including Greyscale data actually decreases accuracy, however the difference is very small, and it is important to note that this is only based on one run of the model
 
-For more details see: [histogram_classifier.ipynb](notebooks/histogram_classifier.ipynb)
+For more details see: [histogram_classifier.ipynb](../notebooks/histogram_classifier.ipynb)
 
 ### K Nearest Neigbours
 
@@ -211,7 +211,7 @@ Observations:
 1. For this model, adding more 'features' in the histogram representations also results in a slight improvement in accuracy.
 2. There is very little difference between using Uniform and Weighted voting in the model
 
-For more details see: [K_nearest_neighbour.ipynb](notebooks/K_nearest_neighbour.ipynb)
+For more details see: [K_nearest_neighbour.ipynb](../notebooks/K_nearest_neighbour.ipynb)
 
 #### Summary
 
