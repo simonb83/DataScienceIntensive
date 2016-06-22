@@ -82,3 +82,20 @@ def complete_histogram(image):
     colors = color_histogram(image)
     grey_hist, bins = np.histogram(rgb2gray(image), bins=256)
     return np.concatenate((colors, grey_hist))
+
+
+def split_data(image_list, proportion):
+    """
+    Split data into training and test subsets
+    :params image_list: dictionary mapping class names to lists of image names associated with that class
+    :params proportion: proportion of data to use in training subset, decimal between 0 and 1
+    :return: train, test; dictionaries mapping class names to sublists of image names
+    """
+    train = {}
+    test = {}
+    n = np.floor(proportion * len(image_list))
+    for k, v in image_list.items():
+        np.random.shuffle(v)
+        train[k] = v[:n]
+        test[k] = v[n:]
+    return train, test
