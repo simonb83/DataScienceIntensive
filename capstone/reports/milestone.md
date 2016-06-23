@@ -112,15 +112,15 @@ For the twelve classes these look like:
 
 **Red Histograms**
 
-![Red Histograms](images/red_histograms.png)
+![Red Histograms](images/interim/red_histograms.png)
 
 **Green Histograms**
 
-![Green Histograms](images/green_histograms.png)
+![Green Histograms](images/interim/green_histograms.png)
 
 **Blue Histograms**
 
-![Blue Histograms](images/blue_histograms.png)
+![Blue Histograms](images/interim/blue_histograms.png)
 
 We can see that there is clear variation between color distributions across the average images for each class.
 
@@ -134,7 +134,7 @@ Next I tried plotting the different classes in 2-Dimensions according to the fol
 
 **2-D Representation**
 
-![2-D Plot](images/2D.png)
+![2-D Plot](images/interim/2D.png)
 
 From the plot we cannot see any clear patterns or groupings for the different classes.
 
@@ -172,7 +172,7 @@ Furthermore, I constructed the model histogram three different ways:
 - RGB
 - RGB + Greyscale
 
-The results were:
+The accuracy results were:
 
 Histogram Type| Intersection | L1 Norm | Euclidean 
 --------------|:------------:|:-------:|:---------:
@@ -185,6 +185,8 @@ Observations:
 1. In general, given 12 classes, we would expect around 8% classification rate simply by picking at random, and so in this case we do only slightly better using the simple histogram classifier.
 2. There is no difference between using Intersection and L1 Norm as a distance metric
 3. The RGB only histogram gives the best result in this case, and adding more features by including Greyscale data actually decreases accuracy, however the difference is very small, and it is important to note that this is only based on one run of the model
+4. Independent of the histogram type, the classifiers typically had low precision across all classes, meaning a high tendency towards false positives
+5. The only class for which the classifiers had good recall was Pork Chop, with a score of 0.76 in the RGB + Greyscale model; otherwise, recall was also low across classes
 
 For more details see: [histogram_classifier.ipynb](../notebooks/histogram_classifier.ipynb)
 
@@ -202,22 +204,72 @@ The results in this case were:
 
 Histogram Type| Uniform | Weighted 
 --------------|:------------:|:-------:
-Greyscale Only | 15.97% | 15.47%
-RGB | 18.63% | 19.03%
-RGB + Greyscale | 19.50% | 18.77%
+Greyscale Only | 15.9% | 15.0%
+RGB | 19.1% | 18.8%
+RGB + Greyscale | 18.0% | 18.6%
 
 Observations:
 
 1. For this model, adding more 'features' in the histogram representations also results in a slight improvement in accuracy.
 2. There is very little difference between using Uniform and Weighted voting in the model
+3. All models saw an improvement in precision and recall across classes, and there were no particularly strong results for a given class, indicating a more 'even' classifier than the simple histogram model
 
 For more details see: [K_nearest_neighbour.ipynb](../notebooks/K_nearest_neighbour.ipynb)
+
+#### Comparison of Results
+
+**Accuracy rates:**
+
+![classification_rates_1](images/interim/classification_rates_1.png)
+
+**Random Classifier:**
+
+_Overall Metrics & Per-Class Metrics_
+
+Classifier accuracy = 8.3%
+
+![random_metrics](images/interim/random_metrics.png)
+
+_Confusion Matrix_
+
+![random_confusion](images/interim/random_confusion.png)
+
+**RGB Histogram Classifier:**
+
+_Overall Metrics & Per-Class Metrics_
+
+![rgb_hist_metrics](images/interim/rgb_hist_metrics.png)
+
+_Confusion Matrix_
+
+![rgb_hist_confusion](images/interim/rgb_hist_confusion.png)
+
+**K Nearest Neighbors: RGB Histograms as Features**
+
+_Overall Metrics & Per-Class Metrics_
+
+![knn_metrics](images/interim/knn_metrics.png)
+
+_Confusion Matrix_
+
+![knn_confusion](images/interim/knn_confusion.png)
+
+Our **Random Classifier** has low precision and recall on all classes (0.11 or below) and we can see from the confusion matrix that its predictions are fairly evenly spread out across classes (as expected).
+
+The overall accuracy of the **Average RGB Histogram** model is only slightly better than random (10.5% vs. 8.3%), but on the pork-chop class in particular it seems to do quite well on initial inspection with a recall score of 0.57.
+
+However, the precision is low (0.11 for pork_chop), and from the confusion matrix we see that in fact it classifies lots of images from all classes as pork_chop, assigning 1,205 out of 3,000 test images to that class (40%).
+
+Steak and Guacamole are the other two classes where it performs better for recall (0.39 and 0.16 respectively), however once again the precision score is low (0.11 and 0.10).
+
+The **K-Nearest Neighbours** classifier improves on accuracy and is also a more balanced classifier across the board, with improved recall and precision for nearly all classes.
+
+Again the confusion matrix seems better balanced, and the classifier does not seem to be getting stuck on one class in particular.
 
 #### Summary
 
 - From initial analysis it appeared that the RGB histograms were quite different for each of the top classes
-- However the best classification rate I was able to achieve simply using the average histogram was just over 10%
-- Using histograms and K-nearest neighbours I was able to nearly double the classification accuracy to 19.50%
-- However at less than 20% accuracy, it is still not high enough to be of real practical use, and so the next step is to explore more complex models to try and achieve greater accuracy.
+- However the best classification rate I was able to achieve simply using the average histogram was just over 10%, and this seems to be more due to an underlying "naive" strategy of predicting a few classes in particular (pork_chop, steak and guacamole).
+- Using histograms and K-nearest neighbours I was able to nearly double the classification accuracy to 19.50%, and furthermore this resulted in a more balanced classifier
+- However at less than 20% accuracy, it is still not high enough to be of real practical use, and so the next step is to explore more complex models to try and achieve better results
 
-![classification_rates_1](images/classification_rates_1.png)

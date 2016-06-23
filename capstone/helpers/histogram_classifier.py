@@ -1,5 +1,7 @@
 import numpy as np
 from skimage.color import rgb2gray
+import sklearn.metrics as metrics
+import pandas as pd
 
 
 def intersection(arr1, arr2):
@@ -93,9 +95,18 @@ def split_data(image_list, proportion):
     """
     train = {}
     test = {}
-    n = np.floor(proportion * len(image_list))
     for k, v in image_list.items():
+        n = int(np.floor(proportion * len(v)))
         np.random.shuffle(v)
         train[k] = v[:n]
         test[k] = v[n:]
     return train, test
+
+
+def get_metrics(real, predicted, labels):
+    general_metrics = metrics.precision_recall_fscore_support(real, predicted, labels=labels)
+    metrics_table = pd.DataFrame.from_records(general_metrics, index=['Precision', 'Recall', 'F1-Score', 'Support'], columns=labels).T.round(2)
+    confusion_matrix = metrics.confusion_matrix(real, predicted, labels=labels)
+    confusion_table = pd.DataFrame(confusion_matrix, index=labels, columns=labels)
+    accuracy = metrics.accuracy_score(real, predicted)
+    return accuracy, metrics_table, confusion_table
