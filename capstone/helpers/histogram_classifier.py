@@ -108,5 +108,11 @@ def get_metrics(real, predicted, labels):
     metrics_table = pd.DataFrame.from_records(general_metrics, index=['Precision', 'Recall', 'F1-Score', 'Support'], columns=labels).T.round(2)
     confusion_matrix = metrics.confusion_matrix(real, predicted, labels=labels)
     confusion_table = pd.DataFrame(confusion_matrix, index=labels, columns=labels)
-    accuracy = metrics.accuracy_score(real, predicted)
-    return accuracy, metrics_table, confusion_table
+    # Get overall metrics
+    overall = {}
+    overall["Accuracy"] = metrics.accuracy_score(real, predicted)
+    overall["Precision"] = metrics.precision_score(real, predicted, average='weighted')
+    overall["Recall"] = metrics.recall_score(real, predicted, average='weighted')
+    overall["F1"] = metrics.f1_score(real, predicted, average='weighted')
+    overall_metrics = pd.DataFrame(overall, index=['Results']).round(3)
+    return overall_metrics, metrics_table, confusion_table
