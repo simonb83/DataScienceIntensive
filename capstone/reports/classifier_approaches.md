@@ -287,3 +287,19 @@ This approach is similar to using the sliding window as above, however instead o
 - **Algorithm:** Random forest trained on features for each segment of each training image; for test images, predict probabilities for each segment and choose class with highest average probability
 - **Classifier accuracy:** ~22%
 - **F1:** 0.211
+
+26. **Non-overlapping sliding window 32x32 + LinearSVM**
+
+- **Features:** Image split into non-overlapping squares of side 32; For each square calculate: Average Red pixel value, average Green pixel value, Average Blue pixel value, Number of edges, Number of corners
+ 
+- **Algorithm:** GridSearch for parameters; LinearSVM, C = 0.001
+- **Classifier accuracy:** ~30%
+- **F1:** 0.284
+
+27. **Linear Classifier + Stochastic Gradient Descent + SVM Loss**
+
+- **Features:** Images of size 64x64, individual pixels as features, normalized by subtracting mean
+ 
+- **Algorithm:** Optimization of SGD with SVM Loss; Learning Rate = 0.0001, Weight Regularization 0.1, 60,000 iterations
+- **Classifier accuracy:** ~23%
+- **F1:** 0.232
