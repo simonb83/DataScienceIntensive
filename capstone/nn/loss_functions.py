@@ -23,29 +23,29 @@ def svm_loss(W, X, y, lam):
     # Calculate full matrix of scores from W and X
     scores = np.dot(X, W)
     # Get score for true class from each row in matrix
-    actual_scores = np.choose(y, scores.T)
-    # Subtract score for true class from each score and add 1
-    diffs = (scores.T - actual_scores).T + np.ones(scores.shape)
-    # We can ignore all differences < 0 due to max in loss function
-    diffs[diffs < 0] = 0
-    # Sum all of the differences; each true class score adds one, so subtract number of samples from result
-    loss = np.sum(diffs) - n_samples
-    loss /= n_samples
-    # Add the L2 weight regularization
-    loss += lam * np.sum(W * W)
+    actual_scores = np.choose(y, scores.T).reshape(n_samples, 1)
+    # Calculate the margins
+    margins = np.maximum(((scores - actual_scores) + np.ones((n_samples, 1))), 0)
+    # Calculate the overall data loss
+    data_loss = (np.sum(margins) - n_samples) / n_samples
+    # Calculate the regularization loss
+    reg_loss = lam * np.sum(W * W)
+    # Overall loss
+    loss = data_loss + reg_loss
 
-    # For calculating gradient, once again use the score - true class score + 1
-    l_scores = (scores.T - actual_scores).T + np.ones(scores.shape)
-    # All differences < 1 contribute 0 to the gradient
-    l_scores[l_scores < 0] = 0
-    # All differences > 1 contribute 1 to the gradient
-    l_scores[l_scores > 0] = 1
-    # For true class, contibute -1 * count of difference > 0
-    l_scores[np.arange(0, scores.shape[0]), y] = 0
-    l_scores[np.arange(0, scores.shape[0]), y] = -1 * np.sum(l_scores, axis=1)
-    # Dot product of contributions with X and normalize by number of samples
-    dW = np.dot(X.T, l_scores)
-    dW /= n_samples
+    ## GRADIENT CALCS ##
+
+    # d_margins is 0 where the margin is less than 0, 1 for all score not equal
+    # to true class score and -1 * number of margins > 0 for true class score
+    d_margins = margins
+    d_margins[d_margins > 0] = 1
+    d_margins[np.arange(0, scores.shape[0]), y] = 0
+    d_margins[np.arange(0, scores.shape[0]), y] = -1 * np.sum(d_margins, axis=1)
+    # d_scores is d_margins dot X
+    d_scores = np.dot(X.T, d_margins) / n_samples
+    d_reg = 2 * lam * W
+    dW = d_scores + d_reg
+
     return loss, dW
 
 
@@ -66,25 +66,36 @@ def softmax_loss(W, X, y, lam):
     loss = 0.0
     dW = np.zeros(W.shape)
     n_samples = X.shape[0]
+
     scores = np.dot(X, W)
+    # Subtract max score to avoid numeric instability
     scores -= np.max(scores)
     exp_scores = np.exp(scores)
     actual_scores = np.choose(y, scores.T)
     exp_actual_scores = np.exp(actual_scores)
-    # Sum over all scores; add small number in case 0 for division purposes
-    exp_sum = np.sum(exp_scores, axis=1) + 1e-8
-    loss_m = exp_actual_scores / exp_sum
-    loss_m = -np.log(loss_m)
-    loss = np.sum(loss_m) / n_samples
-    # Add the L2 weight regularization
-    loss += lam * np.sum(W * W)
+    # Sum over all scores
+    exp_sum = np.sum(exp_scores, axis=1)
+    norm_exp_sum = exp_actual_scores / exp_sum
+    margins = -np.log(norm_exp_sum)
+    data_loss = np.sum(margins) / n_samples
+    reg_loss = lam * np.sum(W * W)
+    loss = data_loss + reg_loss
 
-    m = exp_scores / exp_sum.reshape(n_samples, 1)
-    y_mat = np.zeros((n_samples, W.shape[1]))
-    y_mat[np.arange(n_samples), y] = -1
-    m += y_mat
-    dW = np.dot(X.T, m)
-    dW /= n_samples
-    dW += 2 * lam * W
+    # Derivate of -log(x) = -1 / x
+    d_margins = (-1 / norm_exp_sum).reshape(norm_exp_sum.shape[0], 1)
+
+    # For each score normalized score Sj (except normalized true class score Sy), 
+    # gradient is Sj * Sj;
+    # For true class score Sy, gradient = Sy * (1 - Sy)
+    d_exp_sum = exp_scores / exp_sum.reshape(n_samples, 1)
+    d_exp_sum[np.arange(n_samples), y] *= -1
+    d_exp_sum[np.arange(n_samples), y] += 1
+    d_exp_sum = d_exp_sum * norm_exp_sum.reshape(norm_exp_sum.shape[0], 1)
+    # Backpropogation through normalized exponential
+    d_exp_sum *= d_margins
+
+    d_scores = np.dot(X.T, d_exp_sum) / n_samples
+    d_reg = 2 * lam * W
+    dW = d_scores + d_reg
 
     return loss, dW
