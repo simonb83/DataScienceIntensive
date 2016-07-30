@@ -93,5 +93,15 @@ class LinearSVM(LinearClassifier):
 class LinearSoftmax(LinearClassifier):
 
     def loss(self, X, y, lam):
-        """TODO: Implement Softmax"""
-        pass
+        """
+        Loss function for LinearSoftmax
+        Params:
+        X: Data matrix of shape (N, M) where N is number of samples, and each sample has vector length M
+        y: Array of integer labels of length N
+        lam: weight regularization factor
+
+        Return:
+        Average loss (float)
+        Gradient matrix of dimension (num_classes, M)
+        """
+        return softmax_loss(self.W, X, y, lam)
