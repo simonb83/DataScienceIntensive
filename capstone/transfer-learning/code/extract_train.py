@@ -68,6 +68,7 @@ else:
     features_7 = [] #Second last FC layer
     features_6 = [] #Third last FC layer
     class_names = []
+    image_list = []
 
     print("Obtaining features")
     for c in class_list:
@@ -80,15 +81,23 @@ else:
             features_7.append(net.blobs['fc7'].data[0].copy())
             features_6.append(net.blobs['fc6'].data[0].copy())
             class_names.append(c)
+            image_list.append(c + "/" + im)
     print("Done obtaining features")
 
     features_8 = np.array(features_8) #Last FC layer
     features_7 = np.array(features_7) #Second last FC layer
     features_6 = np.array(features_6) #Third last FC layer
     class_names = np.array(class_names)
+    image_list = np.array(image_list)
+
+    train_mask, test_mask = ls.split_indices(class_names.shape[0], 0.8)
+
+    test_images = image_list[test_mask]
+    fname = str(model) + "_test_images"
+    test_images.dump(os.path.join("../models/", fname))
 
     for l in [6, 7, 8]:
-        X_train, y_train, X_test, y_test = ls.split_data(eval("features_" + str(l)), class_names, 0.8)
+        X_train, y_train, X_test, y_test = ls.split_data(eval("features_" + str(l)), class_names, train_mask, test_mask)
         print("Running grid-search for layer {}".format(l))
         c = ls.get_best_params(X_train, y_train)
         print("Training model for layer {}".format(l))

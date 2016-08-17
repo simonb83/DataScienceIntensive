@@ -11,8 +11,7 @@ def split_indices(array_length, train_proportion):
     np.random.shuffle(indices)
     return indices[:num_train], indices[num_train:]
 
-def split_data(X, y, train_proportion):
-    train_mask, test_mask = split_indices(y.shape[0], train_proportion)
+def split_data(X, y, train_mask, test_mask):
     X_train = X[train_mask]
     y_train = y[train_mask]
     X_test = X[test_mask]
@@ -34,6 +33,7 @@ def run_model(X_train, y_train, X_test, y_test, model, layer, C=0):
     directory_path = os.path.join("../models", directory_name)
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
+    X_test.dump(os.path.join(directory_path, "test_data"))
     y_test.dump(os.path.join(directory_path, "test_labels"))
     predicted_labels.dump(os.path.join(directory_path, "predicted_labels"))
     joblib.dump(svc, os.path.join(directory_path, "model.pkl"))
