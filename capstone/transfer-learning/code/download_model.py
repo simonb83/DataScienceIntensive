@@ -1,5 +1,5 @@
 """
-Download pre-trained model weights for either alexnet or googlenet
+Download pre-trained model weights for either vggnet or googlenet
 
 """
 
@@ -37,12 +37,17 @@ def check_model(filename, sha1):
 
 model_urls = {
     'alexnet': 'http://dl.caffe.berkeleyvision.org/bvlc_alexnet.caffemodel',
-    'googlenet': 'http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel'
+    'vggnet': 'http://www.robots.ox.ac.uk/~vgg/software/deep_eval/releases/bvlc/VGG_CNN_S.caffemodel'
 }
 
 model_sha1 = {
     'alexnet': '9116a64c0fbe4459d18f4bb6b56d647b63920377',
-    'googlenet': '405fc5acd08a3bb12de8ee5e23a96bec22f08204'
+    'vggnet': '862b3744bce69b7ba90d29b8099aed3b00c8580b'
+}
+
+caffe_file = {
+    'alexnet': 'bvlc_alexnet.caffemodel',
+    'vggnet': 'VGG_CNN_S.caffemodel'
 }
 
 parser = argparse.ArgumentParser(description='download model binary')
@@ -52,11 +57,11 @@ parser.add_argument('model_name', metavar='name', type=str, nargs=1,
 args = parser.parse_args()
 model = args.model_name[0]
 
-if model not in ['alexnet', 'googlenet']:
-    print ("Model name not valid. Must be one of 'alexnet' or 'googlenet'.")
+if model not in ['alexnet', 'vggnet']:
+    print ("Model name not valid. Must be one of 'alexnet' or 'vggnet'.")
 else:
     # Check if model already exists
-    filename = "bvlc_" + model + ".caffemodel"
+    filename = caffe_file[model]
     model_filename = os.path.join('../models', model, filename)
     if os.path.exists(model_filename) and check_model(model_filename, model_sha1[model]):
         print("Model already exists.")

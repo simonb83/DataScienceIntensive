@@ -5,6 +5,16 @@ import os, sys
 import argparse
 import linear_svm as ls
 
+caffe_file = {
+    'alexnet': 'bvlc_alexnet.caffemodel',
+    'vggnet': 'VGG_CNN_S.caffemodel'
+}
+
+mean_image = {
+    'alexnet': 'ilsvrc_2012_mean.npy',
+    'vggnet': 'VGG_mean.npy'
+}
+
 parser = argparse.ArgumentParser(description='download model binary')
 parser.add_argument('model_name', metavar='N', type=str, nargs=1,
     help='Name of model')
@@ -19,8 +29,8 @@ model = args.model_name[0]
 gpu = args.gpu[0]
 mode = args.mode[0]
 
-if model not in ['alexnet', 'googlenet']:
-    print ("Model name not valid. Must be one of 'alexnet' or 'googlenet'.")
+if model not in ['alexnet', 'vggnet']:
+    print ("Model name not valid. Must be one of 'alexnet' or 'vggnet'.")
     sys.exit(0)
 
 elif mode not in ['d', 'f']:
@@ -28,7 +38,7 @@ elif mode not in ['d', 'f']:
     sys.exit(0)
 
 else:
-    filename = "bvlc_" + model + ".caffemodel"
+    filename = caffe_file[model]
     model_filename = os.path.join('../models', model, filename)
 
     if gpu == 1:
@@ -36,11 +46,11 @@ else:
     else:
         caffe.set_mode_cpu()
     model_def = os.path.join('../models', model, "deploy.prototxt")
-    model_weights = os.path.join('../models', model, "bvlc_" + model + ".caffemodel")
+    model_weights = model_filename
     net = caffe.Net(model_def, model_weights, caffe.TEST)
 
     # load the mean ImageNet image
-    mu = np.load("../data/ilsvrc_2012_mean.npy")
+    mu = np.load(os.path.join("../data", mean_image[model]))
     mu = mu.mean(1).mean(1)  # average over pixels to obtain the mean (BGR) pixel values
 
     # create transformer for the input called 'data'
@@ -93,7 +103,10 @@ else:
     train_mask, test_mask = ls.split_indices(class_names.shape[0], 0.8)
 
     test_images = image_list[test_mask]
+    train_images = image_list[train_mask]
     fname = str(model) + "_test_images"
+    test_images.dump(os.path.join("../models/", fname))
+    fname = str(model) + "_train_images"
     test_images.dump(os.path.join("../models/", fname))
 
     for l in [6, 7, 8]:
