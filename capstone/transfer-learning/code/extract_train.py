@@ -76,9 +76,9 @@ else:
             img = caffe.io.resize_image(img, (256, 256))
             net.blobs['data'].data[...] = transformer.preprocess('data', img)
             p = net.forward()
-            features_8.append(net.blobs['fc8'].data[0])
-            features_7.append(net.blobs['fc7'].data[0])
-            features_6.append(net.blobs['fc6'].data[0])
+            features_8.append(net.blobs['fc8'].data[0].copy())
+            features_7.append(net.blobs['fc7'].data[0].copy())
+            features_6.append(net.blobs['fc6'].data[0].copy())
             class_names.append(c)
     print("Done obtaining features")
 
