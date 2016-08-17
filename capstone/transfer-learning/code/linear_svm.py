@@ -33,6 +33,8 @@ def run_model(X_train, y_train, X_test, y_test, model, layer, C=0):
     directory_path = os.path.join("../models", directory_name)
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
+    X_train.dump(os.path.join(directory_path, "train_data"))
+    y_train.dump(os.path.join(directory_path, "train_labels"))
     X_test.dump(os.path.join(directory_path, "test_data"))
     y_test.dump(os.path.join(directory_path, "test_labels"))
     predicted_labels.dump(os.path.join(directory_path, "predicted_labels"))
