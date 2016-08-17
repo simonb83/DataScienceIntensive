@@ -6,7 +6,7 @@ Download pre-trained model weights for either alexnet or googlenet
 import os
 import sys
 import argparse
-import urllib.request
+import urllib
 import time
 import hashlib
 
@@ -63,7 +63,7 @@ else:
         sys.exit(0)
     # Else download model
     else:
-        urllib.request.urlretrieve(model_urls[model], model_filename, reporthook)
+        urllib.urlretrieve(model_urls[model], model_filename, reporthook)
         if not check_model(model_filename, model_sha1[model]):
             print("Model did not download correctly. Try again.")
             sys.exit(1)
