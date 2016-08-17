@@ -15,6 +15,7 @@ mean_image = {
     'vggnet': 'VGG_mean.npy'
 }
 
+
 parser = argparse.ArgumentParser(description='download model binary')
 parser.add_argument('model_name', metavar='N', type=str, nargs=1,
     help='Name of model')
@@ -61,7 +62,10 @@ else:
     transformer.set_raw_scale('data', 255)      # rescale from [0, 1] to [0, 255]
     transformer.set_channel_swap('data', (2,1,0))  # swap channels from RGB to BGR
 
-    net.blobs['data'].reshape(1, 3, 227, 227)
+    if model == 'alexnet':
+        net.blobs['data'].reshape(1, 3, 227, 227)
+    else:
+        net.blobs['data'].reshape(1, 3, 224, 224)
 
     classes = pd.read_csv('../data/top_classes/top_classes.csv', index_col=0)
     class_list = list(classes['class'].unique())
