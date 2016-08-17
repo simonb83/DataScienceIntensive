@@ -37,7 +37,7 @@ else:
         caffe.set_mode_cpu()
     model_def = os.path.join('../models', model, "deploy.prototxt")
     model_weights = os.path.join('../models', model, "bvlc_" + model + ".caffemodel")
-    net = caffe.Net(model_def, caffe.TEST, weights=model_weights)
+    net = caffe.Net(model_def, model_weights, caffe.TEST)
 
     # load the mean ImageNet image
     mu = np.load("../data/ilsvrc_2012_mean.npy")
