@@ -1,3 +1,25 @@
+"""
+Script to extract features from pre-trained CNN and optimize and train a Linear SVC on top of extracted features.
+
+:args model_name: Name of the pre-trained CNN to use; one of alexnet, vggnet
+:args gpu: Flag to indicate if CPU or GPU mode should be used; 0 = CPU, 1 = GPU
+:args mode: Indicator for running script in (d)evelopment or (f)ull mode; in development mode only a small subset of data is 
+            used in order to validate that the script is running correctly. In full mode, the entire dataset is used.
+
+The script performs the following steps:
+
+1. Initialize a Caffe Net object using the deploy.prototext and .caffemodel files for the specified model
+2. Set-up a Transformer for pre-processing the data
+3. Load the image data and extract 3 sets of features from fully-connected layers 6, 7 and 8
+4. Split the features into training data and test data (training proportion = 0.8)
+5. For each set of features:
+    i. Run a grid search optimization to find the optimal C parameter for a Linear SVC model
+    ii. Fit a Linear SVC to the training data
+    iii. Make predictions on the test data
+    iv. Dump the relevant test and training data for download
+"""
+
+
 import numpy as np
 import pandas as pd
 import caffe
@@ -39,6 +61,7 @@ elif mode not in ['d', 'f']:
     sys.exit(0)
 
 else:
+    # Initialize Net object using the relevant deploy.prototxt and model-weights
     filename = caffe_file[model]
     model_filename = os.path.join('../models', model, filename)
 
@@ -70,6 +93,7 @@ else:
     classes = pd.read_csv('../data/top_classes/top_classes.csv', index_col=0)
     class_list = list(classes['class'].unique())
 
+    # Maintain a list of the image names used
     image_names = {}
     for c in class_list:
         image_names[c] = np.array(classes[classes['class'] == c]['name'])
@@ -84,6 +108,7 @@ else:
     class_names = []
     image_list = []
 
+    # Load the images and extract features from FC layers 6, 7 and 8
     print("Obtaining features")
     for c in class_list:
         for im in image_names[c]:
@@ -114,9 +139,12 @@ else:
     test_images.dump(os.path.join("../models/", fname))
 
     for l in [6, 7, 8]:
+        # Split into training and test data
         X_train, y_train, X_test, y_test = ls.split_data(eval("features_" + str(l)), class_names, train_mask, test_mask)
+        # Run grid search
         print("Running grid-search for layer {}".format(l))
         c = ls.get_best_params(X_train, y_train)
+        # Fit the model, make predictions and dump the data
         print("Training model for layer {}".format(l))
         ls.run_model(X_train, y_train, X_test, y_test, model, str(l), c)
         print("Layer {} complete".format(l))

@@ -1,6 +1,5 @@
 """
-Download pre-trained model weights for either vggnet or googlenet
-
+Script for downloading pre-trained model weights.
 """
 
 import os
@@ -34,17 +33,19 @@ def check_model(filename, sha1):
     with open(filename, 'rb') as f:
         return hashlib.sha1(f.read()).hexdigest() == sha1
 
-
+# URL for downloading the model weights
 model_urls = {
     'alexnet': 'http://dl.caffe.berkeleyvision.org/bvlc_alexnet.caffemodel',
     'vggnet': 'http://www.robots.ox.ac.uk/~vgg/software/deep_eval/releases/bvlc/VGG_CNN_S.caffemodel'
 }
 
+# For ensuring weights corretly downloaded
 model_sha1 = {
     'alexnet': '9116a64c0fbe4459d18f4bb6b56d647b63920377',
     'vggnet': '862b3744bce69b7ba90d29b8099aed3b00c8580b'
 }
 
+# Name of model weights file
 caffe_file = {
     'alexnet': 'bvlc_alexnet.caffemodel',
     'vggnet': 'VGG_CNN_S.caffemodel'
