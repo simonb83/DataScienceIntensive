@@ -8,13 +8,18 @@ import pandas as pd
 import glob
 import os
 import numpy as np
+import json
 
 classes = pd.read_csv('../data/top_classes/top_classes.csv', index_col=0)
 class_list = list(classes['class'].unique())
 train_image_list = []
 test_image_list = []
 
-for c in class_list:
+class_mapping = dict()
+
+for j, c in enumerate(class_list):
+    class_mapping[c] = j
+
     # Make the new directory for storing resized images
     if not os.path.exists(os.path.join("../data/resized", c)):
         os.makedirs(os.path.join("../data/resized", c))
@@ -26,7 +31,7 @@ for c in class_list:
         image_name = i.split("/")[-1]
         image_path = os.path.join("../data/resized", c, image_name)
         io.imsave(image_path, resized)
-        class_images.append(c + "/" + image_name + " " + c)
+        class_images.append(c + "/" + image_name + " " + str(j))
     np.random.shuffle(class_images)
     num_train = int(0.8 * len(images))
     train_image_list.append(class_images[:num_train])
@@ -41,4 +46,5 @@ with open("../data/alexnet_2/train.txt", "w") as f:
 with open("../data/alexnet_2/test.txt", "w") as f:
     f.write("\n".join(test))
 
+json.dump(class_mapping, open("../data/alexnet_2/class_mapping.txt", "w"))
 
