@@ -2,7 +2,8 @@
 Pre-process all images to rescale to 227 x 227, split into training and test data and create a text file of image names and classes.
 """
 
-import cv2
+from skimage import io
+from skimage.transform import resize
 import pandas as pd
 import glob
 import os
@@ -17,11 +18,11 @@ for c in class_list:
     images = glob.glob(os.path.join("../data/top_classes", c, '*.jpg'))
     class_images = []
     for i in images:
-        image = cv2.imread(i)
-        resized = cv2.resize(image, (227, 227), interpolation = cv2.INTER_AREA)
+        image = io.imread(i)
+        resized = resize(image, (227, 227))
         image_name = i.split("/")[-1]
         image_path = os.path.join("../data/resized", c, image_name)
-        cv2.imwrite(image_path, resized)
+        io.imsave(image_path, resized)
         class_images.append(c + "/" + image_name + " " + c)
     np.random.shuffle(class_images)
     num_train = int(0.8 * len(images))
