@@ -15,6 +15,9 @@ train_image_list = []
 test_image_list = []
 
 for c in class_list:
+    # Make the new directory for storing resized images
+    if not os.path.exists(os.path.join("../data/resized", c)):
+        os.makedirs(os.path.join("../data/resized", c))
     images = glob.glob(os.path.join("../data/top_classes", c, '*.jpg'))
     class_images = []
     for i in images:
