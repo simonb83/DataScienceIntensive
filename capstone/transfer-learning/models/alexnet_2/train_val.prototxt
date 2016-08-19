@@ -14,7 +14,7 @@ layer {
   }
   data_param {
     source: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/train_lmdb"
-    batch_size: 256
+    batch_size: 128
     backend: LMDB
   }
 }
