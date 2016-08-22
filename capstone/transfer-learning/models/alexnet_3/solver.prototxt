@@ -9,6 +9,6 @@ display: 50
 max_iter: 30000
 momentum: 0.9
 weight_decay: 0.0005
-snapshot: 10000
-snapshot_prefix: "/home/ubuntu/sb/capstone/transfer-learning/models/alexnet_3/"
+snapshot: 5000
+snapshot_prefix: "/mnt/models/"
 solver_mode: GPU
