@@ -35,7 +35,7 @@ for j, c in enumerate(class_list):
         class_images.append(c + "/" + image_name + " " + str(j))
     np.random.shuffle(class_images)
     train_split = int(0.8 * len(images)) #E.g., 800 per class
-    num_train = int(0.83 * num_train) # E.g., 667 per class
+    num_train = int(0.83 * train_split) # E.g., 667 per class
 
     train_image_list.append(class_images[:num_train])
     val_image_list.append(class_images[num_train:train_split])
