@@ -28,9 +28,9 @@ if not os.path.exists(weights):
     sys.exit(0)
 
 if gpu == 1:
-        caffe.set_mode_gpu()
-    else:
-        caffe.set_mode_cpu()
+    caffe.set_mode_gpu()
+else:
+    caffe.set_mode_cpu()
 
 # Initialize the model
 model_def = os.path.join('../models/alexnet_3', "deploy.prototxt")
