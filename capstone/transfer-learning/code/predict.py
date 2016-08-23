@@ -21,7 +21,7 @@ parser.add_argument('weights', metavar='W', type=str, nargs=1,
 
 args = parser.parse_args()
 gpu = args.gpu[0]
-weights = args.mode[0]
+weights = args.weights[0]
 
 if not os.path.exists(weights):
     print ("Model weights not valid. Please pass path to valid .caffemodel file.")
@@ -33,6 +33,7 @@ else:
     caffe.set_mode_cpu()
 
 # Initialize the model
+print("Initializing model")
 model_def = os.path.join('../models/alexnet_3', "deploy.prototxt")
 model_weights = weights
 net = caffe.Net(model_def, model_weights, caffe.TEST)
@@ -64,6 +65,7 @@ with open("../transfer-learning/data/alexnet_2/test.txt", "rb") as f:
 
 predictions = []
 
+print("Making predictions")
 for x in test_images:
     path = os.path.join('../data/resized', x.decode().split(" ")[0])
     img = caffe.io.load_image(os.path.join("../data/top_classes", c, im))
@@ -75,6 +77,7 @@ predictions = np.array(predictions)
 predictions_file = os.path.join("../data/alexnet_3", "predictions" + weights)
 predictions.dump(predictions_file)
 
+print("Done")
 
 
 
