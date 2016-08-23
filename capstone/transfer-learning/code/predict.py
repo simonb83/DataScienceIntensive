@@ -61,7 +61,7 @@ transformer.set_channel_swap('data', (2,1,0))  # swap channels from RGB to BGR
 
 net.blobs['data'].reshape(1, 3, 227, 227)
 
-with open("../transfer-learning/data/alexnet_2/test.txt", "rb") as f:
+with open("../data/alexnet_2/test.txt", "rb") as f:
     test_images = f.read().splitlines()
 
 predictions = []
