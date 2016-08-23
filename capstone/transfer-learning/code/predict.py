@@ -72,7 +72,7 @@ for x in test_images:
     img = caffe.io.load_image(path)
     net.blobs['data'].data[...] = transformer.preprocess('data', img)
     p = net.forward()
-    predictions.append(p['prob'][0])
+    predictions.append(p['prob'][0].copy())
 
 predictions = np.array(predictions)
 predictions.dump("../data/alexnet_3/predictions")
