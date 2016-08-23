@@ -75,8 +75,7 @@ for x in test_images:
     predictions.append(p['prob'][0])
 
 predictions = np.array(predictions)
-predictions_file = os.path.join("../data/alexnet_3", "predictions" + weights)
-predictions.dump(predictions_file)
+predictions.dump("../data/alexnet_3/predictions")
 
 print("Done")
 
