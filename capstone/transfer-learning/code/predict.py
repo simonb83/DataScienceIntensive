@@ -69,7 +69,7 @@ predictions = []
 print("Making predictions")
 for x in test_images:
     path = os.path.join('../data/resized', x.decode().split(" ")[0])
-    img = caffe.io.load_image(os.path.join("../data/top_classes", c, im))
+    img = caffe.io.load_image(path)
     net.blobs['data'].data[...] = transformer.preprocess('data', img)
     p = net.forward()
     predictions.append(p['prob'][0])
