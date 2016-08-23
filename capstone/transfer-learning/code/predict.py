@@ -11,6 +11,7 @@ Script for making predictions using a pre-trained caffe model.
 import caffe
 import argparse
 import os
+import numpy as np
 
 
 parser = argparse.ArgumentParser(description='make predictions')
