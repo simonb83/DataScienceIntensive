@@ -49,115 +49,115 @@ for x in image_list:
     #Load the image
     img = io.imread(os.path.join("../data/resized", im_path))
     #Save the original image
-    io.imsave(os.path.join("/data/images", full_im_name))
+    io.imsave(os.path.join("/data/images", full_im_name), img)
     #Perform transformations
     # Jitter by +5 in RGB
     new_img = jitter_rgb(img, 5)
     new_name = im_name + "_p1" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Jitter by -5 in RGB
     new_img = jitter_rgb(img, -5)
     new_name = im_name + "_p2" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Jitter by +10 in RGB
     new_img = jitter_rgb(img, 10)
     new_name = im_name + "_p3" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
         # Jitter by -10 in RGB
     new_img = jitter_rgb(img, -10)
     new_name = im_name + "_p4" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Equalize histogram
     new_img = exposure.equalize_hist(img)
     new_name = im_name + "_p5" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Lighten 1
     new_img = exposure.adjust_gamma(img, gamma=0.5)
     new_name = im_name + "_p6" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Lighten 2
     new_img = exposure.adjust_gamma(img, gamma=0.65)
     new_name = im_name + "_p7" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Lighten 3
     new_img = exposure.adjust_gamma(img, gamma=0.85)
     new_name = im_name + "_p8" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Darken 1
     new_img = exposure.adjust_gamma(img, gamma=1.25)
     new_name = im_name + "_p9" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Darken 2
     new_img = exposure.adjust_gamma(img, gamma=1.5)
     new_name = im_name + "_p10" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Darken 3
     new_img = exposure.adjust_gamma(img, gamma=2)
     new_name = im_name + "_p11" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Rotation 1
     new_img = transform.rotate(img, 45)
     new_name = im_name + "_p12" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Rotation 2
     new_img = transform.rotate(img, 90)
     new_name = im_name + "_p13" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Rotation 3
     new_img = transform.rotate(img, 135)
     new_name = im_name + "_p14" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Rotation 4
     new_img = transform.rotate(img, 180)
     new_name = im_name + "_p15" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Rotation 5
     new_img = transform.rotate(img, 225)
     new_name = im_name + "_p16" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Rotation 6
     new_img = transform.rotate(img, 270)
     new_name = im_name + "_p17" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
     # Rotation 7
     new_img = transform.rotate(img, 315)
     new_name = im_name + "_p17" + ".jpg"
     new_image_list.append(new_name + " " + label)
-    io.imsave(os.path.join("/data/images", new_name))
+    io.imsave(os.path.join("/data/images", new_name), new_img)
 
 with open(os.path.join("../data/alexnet_4", "augmented_" + re.findall(r'\/(\w+\.txt)$', images)[0]), "w") as f:
     f.write("\n".join(new_image_list))
