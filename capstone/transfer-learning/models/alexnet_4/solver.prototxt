@@ -1,0 +1,14 @@
+net: "/home/ubuntu/sb/capstone/transfer-learning/models/alexnet_4/train_val.prototxt"
+test_iter: 100
+test_interval: 1000
+base_lr: 0.001
+lr_policy: "step"
+gamma: 0.1
+stepsize: 6000
+display: 50
+max_iter: 30000
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "/data/models/"
+solver_mode: GPU
