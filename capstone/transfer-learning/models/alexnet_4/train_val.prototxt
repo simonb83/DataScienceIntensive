@@ -8,7 +8,7 @@ layer {
     phase: TRAIN
   }
   transform_param {
-    mirror: true
+    mirror: false
     crop_size: 227
     mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.binaryproto"
   }
