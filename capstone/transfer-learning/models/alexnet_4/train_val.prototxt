@@ -10,10 +10,10 @@ layer {
   transform_param {
     mirror: false
     crop_size: 227
-    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.binaryproto"
+    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/alexnet_2_mean.binaryproto"
   }
   data_param {
-    source: "/data/train_lmdb"
+    source: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/train_lmdb"
     batch_size: 150
     backend: LMDB
   }
@@ -27,12 +27,12 @@ layer {
     phase: TEST
   }
   transform_param {
-    mirror: false
+    mirror: true
     crop_size: 227
-    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.binaryproto"
+    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/alexnet_2_mean.binaryproto"
   }
   data_param {
-    source: "/data/val_lmdb"
+    source: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/val_lmdb"
     batch_size: 50
     backend: LMDB
   }
