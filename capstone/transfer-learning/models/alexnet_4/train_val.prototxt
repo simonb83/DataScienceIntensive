@@ -10,10 +10,10 @@ layer {
   transform_param {
     mirror: false
     crop_size: 227
-    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/alexnet_2_mean.binaryproto"
+    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.binaryproto"
   }
   data_param {
-    source: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/train_lmdb"
+    source: "/data/train_lmdb"
     batch_size: 150
     backend: LMDB
   }
@@ -27,12 +27,12 @@ layer {
     phase: TEST
   }
   transform_param {
-    mirror: true
+    mirror: false
     crop_size: 227
-    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/alexnet_2_mean.binaryproto"
+    mean_file: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.binaryproto"
   }
   data_param {
-    source: "/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/val_lmdb"
+    source: "/data/val_lmdb"
     batch_size: 50
     backend: LMDB
   }
@@ -297,7 +297,7 @@ layer {
   bottom: "fc6"
   top: "fc6"
   dropout_param {
-    dropout_ratio: 0.4
+    dropout_ratio: 0.5
   }
 }
 layer {
@@ -337,7 +337,7 @@ layer {
   bottom: "fc7"
   top: "fc7"
   dropout_param {
-    dropout_ratio: 0.4
+    dropout_ratio: 0.5
   }
 }
 layer {
