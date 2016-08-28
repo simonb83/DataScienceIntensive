@@ -16,7 +16,7 @@ import skimage.exposure as exposure
 import skimage.transform as transform
 
 DEPLOY = "/home/ubuntu/sb/capstone/transfer-learning/models/alexnet_4/deploy.prototxt"
-
+caffe.set_mode_gpu()
 
 
 def initialize_model(model_def, model_weights, mean_image):
