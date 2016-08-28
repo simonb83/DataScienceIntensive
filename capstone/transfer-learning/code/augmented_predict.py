@@ -81,7 +81,7 @@ def predict_images(image_list, net, transformer, predictor):
         predictions.append(predictor(img, net, transformer))
     return np.array(predictions)
 
-
+print("Reading image list.")
 image_list = []
 with open("../data/alexnet_2/test.txt", "r") as f:
     test_images = f.read().splitlines()
@@ -89,6 +89,7 @@ with open("../data/alexnet_2/test.txt", "r") as f:
 for im in test_images:
     image_list.append(im.split(" ")[0])
 
+print("Starting predictions.")
 # Models 3 and 4
 for i in [3, 4]:
     print("Initializing net...")
