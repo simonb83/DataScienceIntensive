@@ -1,4 +1,4 @@
-net: "/home/ubuntu/sb/capstone/transfer-learning/models/alexnet_4/train_val.prototxt"
+net: "/home/ubuntu/sb/capstone/transfer-learning/models/alexnet_4/train_val_fc_only.prototxt"
 test_iter: 100
 test_interval: 1000
 base_lr: 0.001
