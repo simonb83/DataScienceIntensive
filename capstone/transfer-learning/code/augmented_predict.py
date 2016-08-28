@@ -91,25 +91,32 @@ for im in test_images:
 
 # Models 3 and 4
 for i in [3, 4]:
+    print("Initializing net...")
     net, transformer = initialize_model(DEPLOY, 
         os.path.join("/data/models", "v" + str(i), "_iter_5000.caffemodel"), 
         os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/alexnet_2_mean.npy"))
     # Make simple predictions
+    print("Making simple predictions {}".format(i))
     predictions = predict_images(image_list, net, transformer, simple_predict)
     np.dump(os.path.join("/data/predictions", "simple_" + str(i)), predictions)
     # Make predictions with crops
+    print("Making predictions with crops {}".format(i))
     predictions = predict_images(image_list, net, transformer, predict_with_crops)
     np.dump(os.path.join("/data/predictions", "crops_" + str(i)), predictions)
 
 # Models 7 and 8
 for i in [7, 8]:
+    print("Initializing net...")
     net, transformer = initialize_model(DEPLOY, 
         os.path.join("/data/models", "v" + str(i), "_iter_5000.caffemodel"), 
         os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.npy"))
     # Make simple predictions
+    print("Making simple predictions {}".format(i))
     predictions = predict_images(image_list, net, transformer, simple_predict)
     np.dump(os.path.join("/data/predictions", "simple_" + str(i)), predictions)
     # Make predictions with crops
+    print("Making predictions with augmentation {}".format(i))
     predictions = predict_images(image_list, net, transformer, predict_with_augment)
     np.dump(os.path.join("/data/predictions", "augmented_" + str(i)), predictions)
 
+print("Done")
