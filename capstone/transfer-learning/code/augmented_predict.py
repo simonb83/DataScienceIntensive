@@ -1,11 +1,9 @@
 """
-Script for making predictions using a pre-trained caffe model.
+Make predictions using pre-trained caffe models.
 
-:args gpu: Flag to indicate if CPU or GPU mode should be used; 0 = CPU, 1 = GPU
-:args weights: Path to caffe model weights
+Make simple predictions using single test images, or averaged predictions using image crops and / or augmented image strategies.
 
-:output: dumps numpy array of class predictions to ../data/alexnet_3/ directory.
-
+:output: Save per class predictions for each test image and prediction method.
 """
 
 import caffe
@@ -20,6 +18,14 @@ caffe.set_mode_gpu()
 
 
 def initialize_model(model_def, model_weights, mean_image):
+    """
+    Initialize a caffe model and data transformer
+    :params model_def: Path to model prototxt file
+    :params model_weights: Path to model weights
+    :params mean_image: Path to mean image file
+    :return net: Net object
+    :return transformer: Transformer object
+    """
     net = caffe.Net(model_def, model_weights, caffe.TEST)
 
     mu = np.load(mean_image)
@@ -38,6 +44,11 @@ def initialize_model(model_def, model_weights, mean_image):
     return net, transformer
 
 def augment_image(img):
+    """
+    Augment an image using a combination of lightening, darkening, rotation and mirror images.
+    :params img: Image as numpy array
+    :return: array of augmented images 
+    """
     augmented_images = []
     augmented_images.append(np.fliplr(img))
     for g in [0.45, 0.65, 0.85, 1.25, 1.5, 2]:
@@ -50,12 +61,26 @@ def augment_image(img):
     return np.array(augmented_images)
 
 def simple_predict(img, net, transformer):
+    """
+    Perform simple prediction on a single image by making a forward pass through the network
+    :params img: Image as numpy array
+    :params net: Initialized Net object
+    :params transformer: Initialized Transformer object
+    :return: array of predicted probabilities for each class
+    """
     net.blobs['data'].data[...] = transformer.preprocess('data', img)
     p = net.forward()
     predictions = p['prob'][0].copy()
     return predictions
 
 def predict_with_crops(img, net, transformer):
+    """
+    Perform predictions on original image + 5 crops + mirror images and average across all predictions.
+    :params img: Image as numpy array
+    :params net: Initialized Net object
+    :params transformer: Initialized Transformer object
+    :return: array of predicted probabilities for each class
+    """
     predictions = []
     predictions.append(simple_predict(img, net, transformer))
     crops = caffe.io.oversample([img], (227, 227))
@@ -65,6 +90,13 @@ def predict_with_crops(img, net, transformer):
     return np.mean(predictions, axis=0)
 
 def predict_with_augment(img, net, transformer):
+    """
+    Perform predictions on original image plus a series of augmented images, and average across all predictions.
+    :params img: Image as numpy array
+    :params net: Initialized Net object
+    :params transformer: Initialized Transformer object
+    :return: array of predicted probabilities for each class
+    """
     predictions = []
     predictions.append(simple_predict(img, net, transformer))
     aug_images = augment_image(img)
@@ -74,6 +106,17 @@ def predict_with_augment(img, net, transformer):
     return np.mean(predictions, axis=0)
 
 def predict_images(image_list, net, transformer, predictor):
+    """
+    Iterate over a list of images and make predictions for each class based upon a specified prediction approach.
+    :params image_list: Iterable of paths to images
+    :params net: Initialized Net object
+    :params transformer: Initialized Transformer object
+    :params predictor: Method for making predictions: 
+        simple_predict = simple prediction on single images
+        predict_with_crops = predictions on original image + 5 crops + mirror images and average across all predictions.
+        predict_with_augment = predictions on original image plus a series of augmented images, and average across all predictions.
+    :return: array of predicted class probabilities for each image of shape (num_images, num_classes)
+    """
     predictions = []
     for i in image_list:
         path = os.path.join('../data/resized', i)

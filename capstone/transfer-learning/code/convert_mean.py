@@ -1,3 +1,11 @@
+"""
+Convert an image mean in binaryproto format to numpy array
+
+:args mean_file: Path to mean image binaryproto file
+:output: Saves converted file to the same folder as .npy file
+"""
+
+
 import caffe
 import argparse
 import os

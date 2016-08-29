@@ -1,3 +1,13 @@
+"""
+Augment a list of images by applying a combination of transforms to each image. Save each transformed image to disk,
+and output a text file where each line contains the image path followed by the image class:
+transformed_image_path image_class
+
+:args images: Path to text file containing the list of images.
+:output: Save each transformed image to disk, and save text file containing list of images and classes.
+"""
+
+
 import argparse
 import os
 import numpy as np
