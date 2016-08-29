@@ -62,7 +62,7 @@ def predict_with_crops(img, net, transformer):
     for c in crops:
         predictions.append(simple_predict(c, net, transformer))
     predictions = np.array(predictions)
-    return np.mean(predictions)
+    return np.mean(predictions, axis=0)
 
 def predict_with_augment(img, net, transformer):
     predictions = []
@@ -71,7 +71,7 @@ def predict_with_augment(img, net, transformer):
     for c in aug_images:
         predictions.append(simple_predict(c, net, transformer))
     predictions = np.array(predictions)
-    return np.mean(predictions)
+    return np.mean(predictions, axis=0)
 
 def predict_images(image_list, net, transformer, predictor):
     predictions = []
@@ -98,8 +98,8 @@ for i in [3, 4]:
         os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_2/alexnet_2_mean.npy"))
     # Make simple predictions
     print("Making simple predictions {}".format(i))
-    predictions = predict_images(image_list, net, transformer, simple_predict)
-    predictions.dump(os.path.join("/data/predictions", "simple_" + str(i)))
+    #predictions = predict_images(image_list, net, transformer, simple_predict)
+    #predictions.dump(os.path.join("/data/predictions", "simple_" + str(i)))
     # Make predictions with crops
     print("Making predictions with crops {}".format(i))
     predictions = predict_images(image_list, net, transformer, predict_with_crops)
@@ -113,8 +113,8 @@ for i in [7, 8]:
         os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.npy"))
     # Make simple predictions
     print("Making simple predictions {}".format(i))
-    predictions = predict_images(image_list, net, transformer, simple_predict)
-    predictions.dump(os.path.join("/data/predictions", "simple_" + str(i)))
+    #predictions = predict_images(image_list, net, transformer, simple_predict)
+    #predictions.dump(os.path.join("/data/predictions", "simple_" + str(i)))
     # Make predictions with crops
     print("Making predictions with augmentation {}".format(i))
     predictions = predict_images(image_list, net, transformer, predict_with_augment)
