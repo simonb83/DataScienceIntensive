@@ -58,7 +58,7 @@ def simple_predict(img, net, transformer):
 def predict_with_crops(img, net, transformer):
     predictions = []
     predictions.append(simple_predict(img, net, transformer))
-    crops = caffe.io.oversample(img, (227, 227))
+    crops = caffe.io.oversample([img], (227, 227))
     for c in crops:
         predictions.append(simple_predict(c, net, transformer))
     predictions = np.array(predictions)
