@@ -99,11 +99,11 @@ for i in [3, 4]:
     # Make simple predictions
     print("Making simple predictions {}".format(i))
     predictions = predict_images(image_list, net, transformer, simple_predict)
-    np.dump(os.path.join("/data/predictions", "simple_" + str(i)), predictions)
+    predictions.dump(os.path.join("/data/predictions", "simple_" + str(i)))
     # Make predictions with crops
     print("Making predictions with crops {}".format(i))
     predictions = predict_images(image_list, net, transformer, predict_with_crops)
-    np.dump(os.path.join("/data/predictions", "crops_" + str(i)), predictions)
+    predictions.dump(os.path.join("/data/predictions", "crops_" + str(i)))
 
 # Models 7 and 8
 for i in [7, 8]:
@@ -114,10 +114,10 @@ for i in [7, 8]:
     # Make simple predictions
     print("Making simple predictions {}".format(i))
     predictions = predict_images(image_list, net, transformer, simple_predict)
-    np.dump(os.path.join("/data/predictions", "simple_" + str(i)), predictions)
+    predictions.dump(os.path.join("/data/predictions", "simple_" + str(i)))
     # Make predictions with crops
     print("Making predictions with augmentation {}".format(i))
     predictions = predict_images(image_list, net, transformer, predict_with_augment)
-    np.dump(os.path.join("/data/predictions", "augmented_" + str(i)), predictions)
+    predictions.dump(os.path.join("/data/predictions", "augmented_" + str(i)))
 
 print("Done")
