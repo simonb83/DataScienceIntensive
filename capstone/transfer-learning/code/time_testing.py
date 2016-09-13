@@ -135,9 +135,21 @@ for im in test_images:
     image_list.append(im.split(" ")[0])
 
 print("Initializing net...")
-net, transformer = initialize_model(DEPLOY, 
-        os.path.join("/data/models", "v" + str(7), "_iter_5000.caffemodel"), 
-        os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.npy"))
+
+net = caffe.Net(DEPLOY, "/data/models/v7/_iter_5000.caffemodel", caffe.TEST)
+
+mu = np.load("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.npy")
+mu = mu.mean(1).mean(1)  # average over pixels to obtain the mean (BGR) pixel values
+
+# create transformer for the input called 'data'
+transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
+
+transformer.set_transpose('data', (2,0,1))  # move image channels to outermost dimension
+transformer.set_mean('data', mu)            # subtract the dataset-mean value in each channel
+transformer.set_raw_scale('data', 255)      # rescale from [0, 1] to [0, 255]
+transformer.set_channel_swap('data', (2,1,0))  # swap channels from RGB to BGR
+
+net.blobs['data'].reshape(1, 3, 227, 227)
 
 print("Making simple predictions")
 
