@@ -138,7 +138,7 @@ net, transformer = initialize_model(DEPLOY,
         os.path.join("/data/models", "v" + str(7), "_iter_5000.caffemodel"), 
         os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.npy"))
 
-print("Making simple predictions {}".format(i))
+print("Making simple predictions")
 
 #Make one prediction
 tic = timeit.default_timer()
@@ -155,16 +155,19 @@ print("Time for simple predictions on {} images is {}".format(len(image_list), t
 
 # Make augmented predictions
 #Make one prediction
+
+print("Making augmented predictions")
+
 tic = timeit.default_timer()
 predict_images([image_list[0]], net, transformer, predict_with_augment)
 toc = timeit.default_timer()
 
-print("Time for simple prediction on 1 image is {}".format(toc - tic))
+print("Time for augmented prediction on 1 image is {}".format(toc - tic))
 
 tic = timeit.default_timer()
 predict_images(image_list, net, transformer, predict_with_augment)
 toc = timeit.default_timer()
 
-print("Time for simple predictions on {} images is {}".format(len(image_list), toc - tic))
+print("Time for augmented predictions on {} images is {}".format(len(image_list), toc - tic))
 
 print("Done")
