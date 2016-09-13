@@ -125,6 +125,7 @@ def predict_images(image_list, net, transformer, predictor):
         predictions.append(predictor(img, net, transformer))
     return np.array(predictions)
 
+
 print("Reading image list.")
 image_list = []
 with open("../data/alexnet_2/test.txt", "r") as f:
@@ -133,41 +134,41 @@ with open("../data/alexnet_2/test.txt", "r") as f:
 for im in test_images:
     image_list.append(im.split(" ")[0])
 
-print("Initializing net...")
-net, transformer = initialize_model(DEPLOY, 
-        os.path.join("/data/models", "v" + str(7), "_iter_5000.caffemodel"), 
-        os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.npy"))
+# print("Initializing net...")
+# net, transformer = initialize_model(DEPLOY, 
+#         os.path.join("/data/models", "v" + str(7), "_iter_5000.caffemodel"), 
+#         os.path.join("/home/ubuntu/sb/capstone/transfer-learning/data/alexnet_4/alexnet_4_mean.npy"))
 
-print("Making simple predictions")
+# print("Making simple predictions")
 
-#Make one prediction
-tic = timeit.default_timer()
-predict_images([image_list[0]], net, transformer, simple_predict)
-toc = timeit.default_timer()
+# #Make one prediction
+# tic = timeit.default_timer()
+# predict_images([image_list[0]], net, transformer, simple_predict)
+# toc = timeit.default_timer()
 
-print("Time for simple prediction on 1 image is {}".format(toc - tic))
+# print("Time for simple prediction on 1 image is {}".format(toc - tic))
 
-tic = timeit.default_timer()
-predict_images(image_list, net, transformer, simple_predict)
-toc = timeit.default_timer()
+# tic = timeit.default_timer()
+# predict_images(image_list, net, transformer, simple_predict)
+# toc = timeit.default_timer()
 
-print("Time for simple predictions on {} images is {}".format(len(image_list), toc - tic))
+# print("Time for simple predictions on {} images is {}".format(len(image_list), toc - tic))
 
-# Make augmented predictions
-#Make one prediction
+# # Make augmented predictions
+# #Make one prediction
 
-print("Making augmented predictions")
+# print("Making augmented predictions")
 
-tic = timeit.default_timer()
-predict_images([image_list[0]], net, transformer, predict_with_augment)
-toc = timeit.default_timer()
+# tic = timeit.default_timer()
+# predict_images([image_list[0]], net, transformer, predict_with_augment)
+# toc = timeit.default_timer()
 
-print("Time for augmented prediction on 1 image is {}".format(toc - tic))
+# print("Time for augmented prediction on 1 image is {}".format(toc - tic))
 
-tic = timeit.default_timer()
-predict_images(image_list, net, transformer, predict_with_augment)
-toc = timeit.default_timer()
+# tic = timeit.default_timer()
+# predict_images(image_list, net, transformer, predict_with_augment)
+# toc = timeit.default_timer()
 
-print("Time for augmented predictions on {} images is {}".format(len(image_list), toc - tic))
+# print("Time for augmented predictions on {} images is {}".format(len(image_list), toc - tic))
 
 print("Done")
