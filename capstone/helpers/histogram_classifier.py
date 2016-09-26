@@ -116,3 +116,24 @@ def get_metrics(real, predicted, labels):
     overall["F1"] = metrics.f1_score(real, predicted, average='weighted')
     overall_metrics = pd.DataFrame(overall, index=['Results']).round(3)
     return overall_metrics, metrics_table, confusion_table
+
+def top_n_class_accuracy(probabilities, labels, actuals, n):
+    """
+    Calculate accuracy for top n classes based on predicted probabilities
+    :params probabilities: array of predicted probabilities of shape (n_samples, n_classes)
+    :params labels: array of class labels associated with each probability
+    :params actuals: array of true class labels of shape (n_samples,)
+    :params n: top n predictions
+    :return: float, proportion of correct predictions based on top n classes / n_samples
+    """
+    total = actuals.shape[0]
+    correct = 0
+    
+    for row, true_class in zip(probabilities, actuals):
+        class_probs = dict()
+        for l, p in zip(labels, row):
+            class_probs[l] = p
+        top_n_probs = sorted(class_probs, key=class_probs.get, reverse=True)[:n]
+        if true_class in top_n_probs:
+            correct += 1
+    return float(correct)/total
